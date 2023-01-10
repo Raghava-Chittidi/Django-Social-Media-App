@@ -1,0 +1,73 @@
+.body{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+
+/* All posts styling */
+
+.post-div{
+    margin-bottom: 5px;
+    border: 1px solid lightgray;
+    height: 210px;
+    padding: 15px;
+}
+
+.post-user{
+    margin-bottom: 15px;
+}
+
+.post-content{
+    font-weight: 500;
+}
+
+.post-date{
+    color: gray;
+}
+
+#heart-symbol{
+    color: red;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+#like-count{
+    font-size: 1.25em;
+    text-align: center;
+}
+
+
+/* User Profile styling */
+
+.profile-icon-div, .follower-div{
+    width: 350px;
+    display: inline-block;
+}
+
+#profile-stats, #follow-count{
+    display: block;
+    font-weight: 600;
+    font-size: 2em;
+    width: 800px;
+}
+
+#follow-count{
+    margin-left: 55px;
+}
+
+#profile-followers{
+    margin-right: 50px;
+}
+
+#profile-followers-count{
+    margin-right: 175px;
+}
+
+#profile-username{
+    margin-left: 85px;
+}
+
+#profile-posts-title{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}

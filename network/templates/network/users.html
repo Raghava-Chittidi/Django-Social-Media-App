@@ -1,0 +1,100 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    <div>
+        <div class="profile-icon-div">      
+            <img id="profile-icon" src="https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg" alt="Pofile Icon" width="250px">
+        </div>
+
+        <div class="follower-div">
+            <div id="profile-stats">
+                <span id="profile-followers">Followers</span>
+                <span style="margin-right: 60px;">Following</span>
+                {% if request.user.username != name %}
+                    <form action="{% url 'user' name %}" style="display: inline-block;" method="post">
+                        {% csrf_token %}
+                        {% if btn != "Unfollow" %}
+                            <input type="submit" value="Follow" class="btn btn-primary" id="follow-btn">
+                        {% else %}
+                            <input type="submit" value="Unfollow" class="btn btn-primary" id="follow-btn">
+                        {% endif %}
+                    </form>
+                {% endif %}
+            </div>
+            
+            <div id="follow-count">
+                <span id="profile-followers-count">{{ followers }}</span>
+                <span>{{ following }}</span>
+            </div>
+        </div>
+
+        <h2 id="profile-username">{{ name }}</h2>
+        <hr>
+    </div>
+
+    <div>
+        <h1 id="profile-posts-title">Posts</h1>
+
+        <!-- Every single post -->
+        {% for post in posts %}
+            <div class="post-div">
+                <h4 class="post-user"><a href="{% url 'user' post.user %}">{{ post.user }}</a></h4>
+                <div class="post-details">
+                    <div class="post-content">{{ post.content }}</div>
+                    <div class="post-date">{{ post.date }}</div>
+                    <input type="hidden" value="{{ post.id }}">
+                    <input type="hidden" value="{{ request.user.id }}">
+                    <!-- Heart Icon -->
+                    <div class="post-likes">
+                        <a id="heart-symbol" href="#">
+                            {% if request.user not in post.likes.all %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                            {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                            </svg>
+                            {% endif %}
+                        </a>
+                        <span id="like-count">{{ post.likes.all.count }}</span>
+                    </div>
+                    <!-- Edit Button -->
+                    {% if post.user == request.user %}
+                        <div><a class="edit-post" href="#">Edit</a></div>
+                    {% endif %}
+                    {% csrf_token %}
+                </div>
+
+                <!-- Edit Post format -->
+                <div class="edit-div" style="display: none;">
+                    <textarea cols="170" rows="4">{{ post.content }}</textarea>
+                    <input type="submit" value="Save" id="save-btn" class="btn btn-sm btn-outline-primary">
+                </div>
+            </div>
+        {% endfor %}
+        
+
+        <!-- Pagination -->
+        <nav aria-label="...">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" id="previous-btn">Previous</a>
+                    </li>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" id="next-btn">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+
+        <script src="{% static 'network/network.js' %}">
+        </script>
+
+{% endblock %}
